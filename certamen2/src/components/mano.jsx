@@ -7,16 +7,24 @@ import { db } from '../firebaseConfing';
 function Mano() {
   const [cartas, setCartas] = useState([]);
   const [valor, setValor] = useState('');
-  const [palo, setPalo] = useState('corazon');
+  const [pinta, setPinta] = useState('corazon');
   const [resultado, setResultado] = useState('');
   const [mostrarResultado, setMostrarResultado] = useState(false);
 
-  const palos = [
+  const pintas = [
     { value: 'corazon', label: 'Corazón ♥' },
     { value: 'diamante', label: 'Diamante ♦' },
     { value: 'trebol', label: 'Trébol ♣' },
     { value: 'pica', label: 'Pica ♠' }
   ];
+
+  const obtenerValorVisual = (num) => {
+    if (num === 1) return 'A';
+    if (num === 11) return 'J';
+    if (num === 12) return 'Q';
+    if (num === 13) return 'K';
+    return num;
+  };
 
   const agregarCarta = () => {
     const valorNum = parseInt(valor);
@@ -29,7 +37,7 @@ function Mano() {
     const nuevaCarta = {
       id: Date.now(),
       valor: valorNum,
-      palo: palo
+      pinta: pinta
     };
 
     setCartas([...cartas, nuevaCarta]);
@@ -47,29 +55,24 @@ function Mano() {
       if (a.valor !== b.valor) {
         return a.valor - b.valor;
       }
-      return a.palo.localeCompare(b.palo);
+      return a.pinta.localeCompare(b.pinta);
     });
     setCartas(ordenadas);
   };
 
-  // Validar si es un trío (3 cartas del mismo valor)
   const validarTrio = (grupo) => {
     if (grupo.length !== 3) return false;
     return grupo.every(carta => carta.valor === grupo[0].valor);
   };
 
-  // Validar si es una escalera (3 o más cartas consecutivas del mismo palo)
   const validarEscalera = (grupo) => {
     if (grupo.length < 3) return false;
     
-    // Verificar que todas sean del mismo palo
-    const mismoPalo = grupo.every(carta => carta.palo === grupo[0].palo);
-    if (!mismoPalo) return false;
+    const mismaPinta = grupo.every(carta => carta.pinta === grupo[0].pinta);
+    if (!mismaPinta) return false;
 
-    // Ordenar por valor
     const ordenadas = [...grupo].sort((a, b) => a.valor - b.valor);
     
-    // Verificar que sean consecutivas
     for (let i = 1; i < ordenadas.length; i++) {
       if (ordenadas[i].valor !== ordenadas[i-1].valor + 1) {
         return false;
@@ -78,21 +81,17 @@ function Mano() {
     return true;
   };
 
-  // Validar DOS ESCALERAS Y UN TRÍO
   const validarJuegoCompleto = () => {
-    if (cartas.length < 9) return false; // Mínimo: 3+3+3 = 9 cartas
+    if (cartas.length < 9) return false; 
 
-    // Intentar encontrar todas las combinaciones posibles
     const combinaciones = [];
     
-    // Generar todas las combinaciones posibles de grupos
     const generarCombinaciones = (cartasRestantes, gruposActuales) => {
       if (cartasRestantes.length === 0) {
         combinaciones.push([...gruposActuales]);
         return;
       }
 
-      // Intentar formar grupos de diferentes tamaños
       for (let size = 3; size <= cartasRestantes.length; size++) {
         for (let i = 0; i <= cartasRestantes.length - size; i++) {
           const grupo = cartasRestantes.slice(i, i + size);
@@ -107,7 +106,6 @@ function Mano() {
 
     generarCombinaciones(cartas, []);
 
-    // Buscar combinación con exactamente 2 escaleras y 1 trío
     for (const combinacion of combinaciones) {
       let escaleras = 0;
       let trios = 0;
@@ -134,9 +132,8 @@ function Mano() {
       return;
     }
 
-    // Validar el juego específico: DOS ESCALERAS Y UN TRÍO
     if (validarJuegoCompleto()) {
-      setResultado('¡JUEGO VÁLIDO! 🎉 (2 Escaleras + 1 Trío)');
+      setResultado('¡JUEGO VÁLIDO! (2 Escaleras + 1 Trío)');
       setMostrarResultado(true);
       await guardarJugada();
     } else {
@@ -148,12 +145,10 @@ function Mano() {
   const guardarJugada = async () => {
     try {
       const jugada = {
-        tipo: 'Dos Escaleras y Un Trío',
         cartas: cartas.map(c => ({
-          valor: c.valor,
-          palo: c.palo
+          numero: obtenerValorVisual(c.valor),
+          pinta: c.pinta
         })),
-        fecha: new Date().toISOString()
       };
 
       await addDoc(collection(db, 'jugadascarioca'), jugada);
@@ -173,7 +168,7 @@ function Mano() {
         transition={{ type: 'spring', stiffness: 200, damping: 15 }}
         style={{ color: '#2c3e50', fontWeight: 'bold' }}
       >
-        🃏 Juego de Carioca 🃏
+        Juego de Carioca
       </motion.h1>
 
       <motion.div 
@@ -199,10 +194,10 @@ function Mano() {
           <div className="col-md-4">
             <select 
               className="form-select"
-              value={palo}
-              onChange={(e) => setPalo(e.target.value)}
+              value={pinta}
+              onChange={(e) => setPinta(e.target.value)}
             >
-              {palos.map(p => (
+              {pintas.map(p => (
                 <option key={p.value} value={p.value}>{p.label}</option>
               ))}
             </select>
@@ -270,8 +265,8 @@ function Mano() {
             <Carta
               key={carta.id}
               id={carta.id}
-              valor={carta.valor}
-              palo={carta.palo}
+              valor={obtenerValorVisual(carta.valor)} 
+              palo={carta.pinta} 
               onDescartar={descartarCarta}
             />
           ))}
