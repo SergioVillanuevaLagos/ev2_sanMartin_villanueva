@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
-import "./css/bootstrap.min.css";
+import React from "react";
+import Mano from "./components/mano";
 
 function App() {
-  return ( 
-    <Fragment>
-      <h1>Hola Mundo</h1>
-    </Fragment>
-  ); 
+  return (
+    <div className="App">
+      <Mano />
+    </div>
+  );
 }
 
 export default App;

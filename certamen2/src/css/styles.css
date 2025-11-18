@@ -1,0 +1,64 @@
+.carta {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    width: 100px;
+    height: 150px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.carta-valor {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5rem;
+}
+
+.carta i {
+    font-size: 3rem;
+}
+
+.bi-suit-heart-fill,
+.bi-suit-diamond-fill {
+    color: red;
+}
+
+.bi-suit-club-fill,
+.bi-suit-spade-fill {
+    color: black;
+}
+
+.btn-eliminar {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #ff0000;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    line-height: 1;
+    padding: 0;
+    color: rgb(255, 255, 255)
+}
+
+.btn-eliminar:hover {
+    background: #ff2f00;
+}
+
+body {
+    background: #166534
+}
