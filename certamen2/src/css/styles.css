@@ -1,64 +1,88 @@
-.carta {
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    width: 100px;
-    height: 150px;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+body {
+    background: #166534;
+}
+
+
+.titulo-principal {
+    color: #2c3e50;
     font-weight: bold;
+}
+
+.tarjeta-inputs {
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+}
+
+.btn-juego {
+    font-weight: bold;
+}
+
+.resultado-final {
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+
+
+.carta {
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
     position: relative;
+    width: 100px;
+    height: 140px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
 }
 
 .carta-valor {
     position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 1.5rem;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-.carta i {
-    font-size: 3rem;
+.carta-simbolo {
+    font-size: 40px;
 }
 
-.bi-suit-heart-fill,
-.bi-suit-diamond-fill {
-    color: red;
-}
-
-.bi-suit-club-fill,
-.bi-suit-spade-fill {
-    color: black;
-}
 
 .btn-eliminar {
     position: absolute;
     top: 5px;
     right: 5px;
-    background: #ff0000;
-    border: 1px solid #ddd;
+    background: #dc3545; 
+    color: #fff;
+    border: none;
     border-radius: 50%;
     width: 25px;
     height: 25px;
     cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    /* Aseguramos que el 'X' esté centrado */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 0.8rem;
     line-height: 1;
     padding: 0;
-    color: rgb(255, 255, 255)
 }
 
 .btn-eliminar:hover {
     background: #ff2f00;
 }
 
-body {
-    background: #166534
+.corazon-color,
+.diamante-color {
+    color: #dc3545;
+}
+
+.trebol-color,
+.pica-color {
+    color: #000;
 }

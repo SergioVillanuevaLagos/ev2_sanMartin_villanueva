@@ -67,11 +67,13 @@ function Mano() {
   };
 
   const ordenarCartas = () => {
+    const ordenPintas = { 'trebol': 1, 'diamante': 2, 'corazon': 3, 'pica': 4 };
+    
     const ordenadas = [...cartas].sort((a, b) => {
       if (a.valor !== b.valor) {
         return a.valor - b.valor;
       }
-      return a.pinta.localeCompare(b.pinta);
+      return ordenPintas[a.pinta] - ordenPintas[b.pinta];
     });
     setCartas(ordenadas);
   };
@@ -178,20 +180,18 @@ function Mano() {
   return (
     <div className="container mt-5">
       <motion.h1 
-        className="text-center mb-4"
+        className="text-center mb-4 titulo-principal"
         initial={{ scale: 0, y: -50 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-        style={{ color: '#2c3e50', fontWeight: 'bold' }}
       >
         Juego de Carioca
       </motion.h1>
 
       <motion.div 
-        className="card p-4 mb-4"
+        className="card p-4 mb-4 tarjeta-inputs"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        style={{ backgroundColor: '#f8f9fa', border: '2px solid #dee2e6' }}
       >
         <h4 className="mb-3">Agregar Carta</h4>
         <p className="text-muted mb-3">Objetivo: <strong>2 Escaleras + 1 Trío</strong></p>
@@ -223,11 +223,10 @@ function Mano() {
           </div>
           <div className="col-md-4">
             <motion.button
-              className="btn btn-primary w-100"
+              className="btn btn-primary w-100 btn-juego"
               onClick={agregarCarta}
-              whileHover={{ scale: 1.05, backgroundColor: '#0056b3' }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              style={{ fontWeight: 'bold' }}
             >
               Agregar Carta
             </motion.button>
@@ -237,20 +236,18 @@ function Mano() {
 
       <div className="mb-4">
         <motion.button
-          className="btn btn-success me-2"
+          className="btn btn-success me-2 btn-juego"
           onClick={validarJuego}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{ fontWeight: 'bold' }}
         >
           Validar Juego
         </motion.button>
         <motion.button
-          className="btn btn-info"
+          className="btn btn-info btn-juego"
           onClick={ordenarCartas}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          style={{ fontWeight: 'bold' }}
         >
           Ordenar Cartas
         </motion.button>
@@ -259,7 +256,7 @@ function Mano() {
       <AnimatePresence>
         {mostrarResultado && (
           <motion.h1
-            className={`text-center mb-4 ${
+            className={`text-center mb-4 resultado-final ${
               resultado.includes('VÁLIDO') ? 'text-success' : 'text-danger'
             }`}
             initial={{ scale: 0, rotate: -180, opacity: 0 }}
@@ -271,7 +268,6 @@ function Mano() {
               damping: 20,
               duration: 0.6
             }}
-            style={{ fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0,0,0,0.2)' }}
           >
             {resultado}
           </motion.h1>
@@ -284,8 +280,8 @@ function Mano() {
             <Carta
               key={carta.id}
               id={carta.id}
-              valor={obtenerValorVisual(carta.valor)} 
-              palo={carta.pinta} 
+              numero={obtenerValorVisual(carta.valor)} 
+              pinta={carta.pinta} 
               onDescartar={descartarCarta}
             />
           ))}
@@ -298,8 +294,7 @@ function Mano() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <h4>No hay cartas. ¡Comienza a agregar cartas!</h4>
-          <p>Necesitas formar: <strong>2 Escaleras</strong> y <strong>1 Trío</strong></p>
+          <h4>No hay cartas</h4>
         </motion.div>
       )}
     </div>
