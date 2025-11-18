@@ -18,6 +18,22 @@ function Mano() {
     { value: 'pica', label: 'Pica ♠' }
   ];
 
+  const valoresPosibles = [
+    { value: 1, label: 'A' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },
+    { value: 6, label: '6' },
+    { value: 7, label: '7' },
+    { value: 8, label: '8' },
+    { value: 9, label: '9' },
+    { value: 10, label: '10' },
+    { value: 11, label: 'J' },
+    { value: 12, label: 'Q' },
+    { value: 13, label: 'K' }
+  ];
+
   const obtenerValorVisual = (num) => {
     if (num === 1) return 'A';
     if (num === 11) return 'J';
@@ -29,8 +45,8 @@ function Mano() {
   const agregarCarta = () => {
     const valorNum = parseInt(valor);
     
-    if (!valor || isNaN(valorNum) || valorNum < 1 || valorNum > 13) {
-      alert('Ingrese un valor válido entre 1 y 13');
+    if (!valor || isNaN(valorNum)) {
+      alert('Seleccione un valor de carta');
       return;
     }
 
@@ -181,15 +197,18 @@ function Mano() {
         <p className="text-muted mb-3">Objetivo: <strong>2 Escaleras + 1 Trío</strong></p>
         <div className="row g-3">
           <div className="col-md-4">
-            <input 
-              type="number"
-              className="form-control"
-              placeholder="Valor (1-13)"
+            <select
+              className="form-select"
               value={valor}
               onChange={(e) => setValor(e.target.value)}
-              min="1"
-              max="13"
-            />
+            >
+              <option value="">Seleccione Valor</option>
+              {valoresPosibles.map((v) => (
+                <option key={v.value} value={v.value}>
+                  {v.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="col-md-4">
             <select 
